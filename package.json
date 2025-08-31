@@ -1,0 +1,13 @@
+{
+  "name": "pfotenfreund-voicebot",
+  "version": "1.0.0",
+  "description": "Voice Agent Orchestrator",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0"
+  }
+}
