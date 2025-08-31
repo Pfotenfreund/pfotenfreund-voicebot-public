@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pfotenfreund finalize_outcome schema",
+  "description": "Schema für den Tool-Call `finalize_outcome` des Voice-Agents.",
+  "type": "object",
+  "properties": {
+    "lead_id": {
+      "type": "string",
+      "description": "Eindeutiger Schlüssel des Leads (kommt aus dem Formular)."
+    },
+    "qualification": {
+      "type": "string",
+      "enum": ["qualified", "unqualified", "needs_followup"],
+      "description": "Ergebnis der Qualifizierung: Kundenabschluss möglich, kein Interesse oder Rückruf nötig."
+    },
+    "product_interest": {
+      "type": "string",
+      "enum": ["Basis", "Komfort", "Premium", "Unklar"],
+      "description": "Für welches Produkt interessiert sich der Kunde?"
+    },
+    "price_expectation_eur": {
+      "type": "number",
+      "description": "Monatlicher Preisrahmen in Euro, den der Kunde bereit ist zu zahlen."
+    },
+    "objections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Art des Einwands (z. B. Preis, Zeit, fehlender Nutzen)."
+          },
+          "resolved": {
+            "type": "boolean",
+            "description": "Wurde der Einwand im Gespräch gelöst?"
+          }
+        },
+        "required": ["type", "resolved"]
+      },
+      "description": "Liste der Einwände und ob sie gelöst werden konnten."
+    },
+    "close_path": {
+      "type": "string",
+      "enum": ["direct_link_sent", "needs_callback", "declined"],
+      "description": "Wie geht es weiter: Direktlink zum Abschluss, Rückruf, oder abgelehnt."
+    },
+    "customer_details": {
+      "type": "object",
+      "properties": {
+        "full_name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "phone": {"type": "string"},
+        "address": {"type": "string"},
+        "iban": {"type": "string"}
+      },
+      "description": "Gesammelte Kontaktdaten des Kunden."
+    },
+    "pet": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "breed": {"type": "string"},
+        "age_years": {"type": "number"},
+        "preexisting_conditions": {"type": "string"}
+      },
+      "description": "Haustierdetails zur individuellen Beratung."
+    },
+    "next_step": {
+      "type": "string",
+      "description": "Nächste Aktion nach dem Telefonat (Rückruf, Link versenden etc.)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optionale Anmerkungen oder Zusammenfassung."
+    }
+  },
+  "required": ["lead_id", "qualification", "close_path"]
+}
