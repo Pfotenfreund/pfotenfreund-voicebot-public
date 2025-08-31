@@ -12,7 +12,19 @@
 const fs = require('fs');
 const express = require('express');
 const axios = require('axios');
-require('dotenv').config();
+
+// Versuche .env nur lokal zu laden. In Production (z. B. Render) sind die
+// Umgebungsvariablen bereits gesetzt, und dotenv ist ggf. nicht installiert.
+try {
+  // Ist dotenv installiert? Falls ja, lade Konfiguration aus .env-Datei
+  require('dotenv').config();
+} catch (err) {
+  // dotenv ist optional. In Produktionsumgebungen ohne dotenv (z. B. Render)
+  // stehen die Umgebungsvariablen direkt in process.env bereit.
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn('dotenv konnte nicht geladen werden. Stelle sicher, dass deine Umgebungsvariablen gesetzt sind.');
+  }
+}
 
 // Lese das Prompt aus Datei. Fallback auf agent_prompt.txt im Arbeitsverzeichnis.
 let agentPrompt;
