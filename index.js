@@ -59,11 +59,20 @@ app.post('/call/start', async (req, res) => {
   }
   try {
     // Baue das Payload für die GPT‑Realtime‑API.
+    // Baue das Payload für die GPT‑Realtime‑API.
+    // Neben dem Prompt können wir hier auch eine feste Stimme und die Temperature
+    // konfigurieren. Sowohl voice als auch temperature lassen sich über
+    // Umgebungsvariablen steuern. Für deutschsprachige Gespräche sind
+    // "fable" (männlich) und "nova" (weiblich) aktuell besonders gut geeignet.
     const payload = {
       from: process.env.CALLER_ID,
       to: lead.phone,
       webhook_url: `${process.env.WEBHOOK_BASE}/events`,
       agent: {
+        // setze die gewünschte Stimme (OpenAI Preset). Wenn keine gesetzt, nutzen wir "nova" als Standard
+        voice: process.env.REALTIME_VOICE || 'nova',
+        // Temperatur steuert die Varianz der Antworten. 0.6 wirkt natürlich, 0.8 ist kreativer.
+        temperature: parseFloat(process.env.REALTIME_TEMPERATURE || '0.6'),
         system_prompt: agentPrompt,
         knowledge: { products: ['Basis', 'Komfort', 'Premium'] },
         tools: [
